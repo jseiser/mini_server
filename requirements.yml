@@ -1,0 +1,7 @@
+---
+roles:
+  # Install a role from Ansible Galaxy.
+  - name: geerlingguy.docker
+    version: 6.0.2
+  - name: geerlingguy.pip
+    version: 2.2.0

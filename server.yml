@@ -1,0 +1,197 @@
+- name: MiniServer
+  hosts: miniserver
+  tasks:
+
+    - name: Install Base Packages
+      become: true
+      ansible.builtin.apt:
+        name: "{{ base_packages }}"
+        state: present
+        update_cache: yes
+      tags:
+        - packages
+
+    - name: Check mountpoint exist
+      become: true
+      ansible.builtin.file:
+        path: "{{ nfs.mountpoint }}/{{ item.key }}"
+        state: directory
+        mode: "{{ nfs.permission }}"
+        owner: root
+        group: root
+      loop: "{{ nfs.share_data | dict2items }}"
+      tags:
+        - nfs
+
+    - name: Mount network share
+      become: true
+      ansible.posix.mount:
+        src: "{{ nfs.server }}:{{ nfs.server_host }}{{ item.value }}"
+        path: "{{ nfs.mountpoint }}/{{ item.key }}"
+        fstype: nfs
+        opts: "{{ nfs.myopts }}"
+        state: mounted
+      loop: "{{ nfs.share_data | dict2items }}"
+      tags:
+        - nfs
+
+    - name: Docker Roles
+      ansible.builtin.include_role:
+        name: "{{ item }}"
+        apply:
+          become: true
+      loop:
+        - geerlingguy.pip
+        - geerlingguy.docker
+      tags:
+        - docker
+
+    - name: Create Docker Network
+      community.docker.docker_network:
+        name: "{{ common.docker_network_name }}"
+      tags:
+        - docker
+
+    - name: SABNZBD
+      community.docker.docker_container:
+        name: "{{ sabnzbd.name }}"
+        image: "{{ sabnzbd.image }}"
+        env: "{{ sabnzbd.vars }}"
+        volumes: "{{ sabnzbd.volumes }}"
+        ports: "{{ sabnzbd.ports }}"
+        restart_policy: "{{ sabnzbd.restart_policy }}"
+        state: "{{ sabnzbd.state }}"
+        networks:
+          - name: "{{ sabnzbd.network_name }}"
+      tags:
+        - docker
+        - sabnzbd
+
+    - name: DELUGE
+      community.docker.docker_container:
+        name: "{{ deluge.name }}"
+        image: "{{ deluge.image }}"
+        env: "{{ deluge.vars }}"
+        volumes: "{{ deluge.volumes }}"
+        ports: "{{ deluge.ports }}"
+        restart_policy: "{{ deluge.restart_policy }}"
+        state: "{{ deluge.state }}"
+        networks:
+          - name: "{{ deluge.network_name }}"
+      tags:
+        - docker
+        - deluge
+
+    - name: NZBHYDR2
+      community.docker.docker_container:
+        name: "{{ nzbhydra2.name }}"
+        image: "{{ nzbhydra2.image }}"
+        env: "{{ nzbhydra2.vars }}"
+        volumes: "{{ nzbhydra2.volumes }}"
+        ports: "{{ nzbhydra2.ports }}"
+        restart_policy: "{{ nzbhydra2.restart_policy }}"
+        state: "{{ nzbhydra2.state }}"
+        networks:
+          - name: "{{ nzbhydra2.network_name }}"
+      tags:
+        - docker
+        - nzbhydra2
+
+    - name: JACKETT
+      community.docker.docker_container:
+        name: "{{ jackett.name }}"
+        image: "{{ jackett.image }}"
+        env: "{{ jackett.vars }}"
+        volumes: "{{ jackett.volumes }}"
+        ports: "{{ jackett.ports }}"
+        restart_policy: "{{ jackett.restart_policy }}"
+        state: "{{ jackett.state }}"
+        networks:
+          - name: "{{ jackett.network_name }}"
+      tags:
+        - docker
+        - jackett
+
+    - name: Jacket Dir
+      ansible.builtin.file:
+        path: "{{ common.config_dir }}/jackett/config/{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+      loop:
+        - cardigann
+        - cardigann/definitions
+      tags:
+        - docker
+        - jackett
+      register: jacket_files
+
+    - name: Jacket Configs
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ common.config_dir }}/jackett/config/cardigann/definitions/{{ item }}"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0644'
+      loop:
+        - hpjradarr.yml
+        - hpjsonarr.yml
+      tags:
+        - docker
+        - jackett
+
+    - name: JACKETT Restart
+      community.docker.docker_container:
+        name: "{{ jackett.name }}"
+        image: "{{ jackett.image }}"
+        state: "restarted"
+      when: jacket_files.changed
+      tags:
+        - docker
+        - jackett
+
+    - name: RADARR
+      community.docker.docker_container:
+        name: "{{ radarr.name }}"
+        image: "{{ radarr.image }}"
+        env: "{{ radarr.vars }}"
+        volumes: "{{ radarr.volumes }}"
+        ports: "{{ radarr.ports }}"
+        restart_policy: "{{ radarr.restart_policy }}"
+        state: "{{ radarr.state }}"
+        networks:
+          - name: "{{ radarr.network_name }}"
+      tags:
+        - docker
+        - radarr
+
+    - name: SONARR
+      community.docker.docker_container:
+        name: "{{ sonarr.name }}"
+        image: "{{ sonarr.image }}"
+        env: "{{ sonarr.vars }}"
+        volumes: "{{ sonarr.volumes }}"
+        ports: "{{ sonarr.ports }}"
+        restart_policy: "{{ sonarr.restart_policy }}"
+        state: "{{ sonarr.state }}"
+        networks:
+          - name: "{{ sonarr.network_name }}"
+      tags:
+        - docker
+        - sonarr
+
+    - name: EMBY
+      community.docker.docker_container:
+        name: "{{ emby.name }}"
+        image: "{{ emby.image }}"
+        env: "{{ emby.vars }}"
+        volumes: "{{ emby.volumes }}"
+        ports: "{{ emby.ports }}"
+        restart_policy: "{{ emby.restart_policy }}"
+        state: "{{ emby.state }}"
+        networks:
+          - name: "{{ emby.network_name }}"
+      tags:
+        - docker
+        - emby

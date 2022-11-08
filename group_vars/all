@@ -1,0 +1,172 @@
+ansible_user: justin
+ansible_become_password: !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    63326635313735383239356563316330663437663334356364376664353466653363313036343335
+    3265333631616433353031636137303937613736373038360a646362656265333736336537326461
+    66336437663338363764633935336461613462343164346564653839386633613833333437613865
+    6131383333303732330a656536356436323462623265616230373837393132663661323831623763
+    6131
+
+base_packages:
+    - nfs-common
+    - nfs4-acl-tools
+
+nfs:
+    server: 192.168.121.2
+    server_host: /volume1/
+    mountpoint: /share
+    permission: "0777"
+    myopts: "auto,nofail,noatime,nolock,intr,tcp,actimeo=1800"
+    share_data:
+        docker_configs: "docker_configs"
+        movies: "media/movies"
+        tv: "media/tv"
+        new: "media/new"
+
+common:
+    config_dir: "{{ nfs.mountpoint }}/docker_configs"
+    restart_policy: unless-stopped
+    state: "started"
+    docker_network_name: seiser
+    time_zone: "America/New_York"
+    umask: "022"
+    uid: "1000"
+    gid: "1000"
+    registry: "lscr.io/linuxserver"
+    container_platform: "amd64"
+
+docker_users:
+    - "{{ ansible_user }}"
+
+pip_install_packages:
+    - name: docker
+
+sabnzbd:
+    network_name: "{{ common.docker_network_name }}"
+    name: sabnzbd
+    image: "{{ common.registry }}/sabnzbd:{{ common.container_platform }}-3.7.0"
+    vars:
+        PUID: "{{ common.uid }}"
+        PGID: "{{ common.gid }}"
+        TZ: "{{ common.time_zone }}"
+        UMASK: "{{ common.umask }}"
+    volumes:
+        - "{{ common.config_dir }}/sabnzbd/config:/config"
+        - "{{ nfs.mountpoint }}/new:/downloads"
+        - "{{ nfs.mountpoint }}/new/incomplete:/incomplete-downloads"
+    ports:
+        - "8080:8080"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+
+deluge:
+    network_name: "{{ common.docker_network_name }}"
+    name: deluge
+    image: "{{ common.registry }}/deluge:{{ common.container_platform }}-2.1.1-r5-ls183"
+    vars:
+        PUID: "{{ common.uid }}"
+        PGID: "{{ common.gid }}"
+        TZ: "{{ common.time_zone }}"
+        UMASK: "{{ common.umask }}"
+    volumes:
+        - "{{ common.config_dir }}/deluge/config:/config"
+        - "{{ nfs.mountpoint }}/new:/downloads"
+    ports:
+        - "8112:8112"
+        - "6881:6881"
+        - "6881:6881/udp"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+
+nzbhydra2:
+    network_name: "{{ common.docker_network_name }}"
+    name: nzbhydra2
+    image: "{{ common.registry }}/nzbhydra2:{{ common.container_platform }}-v4.6.1-ls74"
+    vars:
+        PUID: "{{ common.uid }}"
+        PGID: "{{ common.gid }}"
+        TZ: "{{ common.time_zone }}"
+        UMASK: "{{ common.umask }}"
+    volumes:
+        - "{{ common.config_dir }}/nzbhydra2/config:/config"
+        - "{{ nfs.mountpoint }}/new:/downloads"
+    ports:
+        - "5076:5076"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+
+jackett:
+    network_name: "{{ common.docker_network_name }}"
+    name: jackett
+    image: "{{ common.registry }}/jackett:{{ common.container_platform }}-v0.20.2218-ls81"
+    vars:
+        PUID: "{{ common.uid }}"
+        PGID: "{{ common.gid }}"
+        TZ: "{{ common.time_zone }}"
+        UMASK: "{{ common.umask }}"
+        AUTO_UPDATE: "false"
+    volumes:
+        - "{{ common.config_dir }}/jackett/config:/config"
+        - "{{ nfs.mountpoint }}/new:/downloads"
+    ports:
+        - "9117:9117"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+
+radarr:
+    network_name: "{{ common.docker_network_name }}"
+    name: radarr
+    image: "{{ common.registry }}/radarr:{{ common.container_platform }}-4.2.4.6635-ls156"
+    vars:
+        PUID: "{{ common.uid }}"
+        PGID: "{{ common.gid }}"
+        TZ: "{{ common.time_zone }}"
+        UMASK: "{{ common.umask }}"
+    volumes:
+        - "{{ common.config_dir }}/radarr/config:/config"
+        - "{{ nfs.mountpoint }}/new:/downloads"
+        - "{{ nfs.mountpoint }}/movies:/movies"
+    ports:
+        - "7878:7878"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+
+sonarr:
+    network_name: "{{ common.docker_network_name }}"
+    name: sonarr
+    image: "{{ common.registry }}/sonarr:{{ common.container_platform }}-3.0.9.1549-ls163"
+    vars:
+        PUID: "{{ common.uid }}"
+        PGID: "{{ common.gid }}"
+        TZ: "{{ common.time_zone }}"
+        UMASK: "{{ common.umask }}"
+    volumes:
+        - "{{ common.config_dir }}/sonarr/config:/config"
+        - "{{ nfs.mountpoint }}/new:/downloads"
+        - "{{ nfs.mountpoint }}/tv:/tv"
+    ports:
+        - "8989:8989"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+
+emby:
+    network_name: "{{ common.docker_network_name }}"
+    name: emby
+    image: "{{ common.registry }}/emby:{{ common.container_platform }}-4.7.9.0-ls134"
+    vars:
+        PUID: "{{ common.uid }}"
+        PGID: "{{ common.gid }}"
+        TZ: "{{ common.time_zone }}"
+        UMASK: "{{ common.umask }}"
+    volumes:
+        - "{{ common.config_dir }}/emby/config:/config"
+        - "{{ nfs.mountpoint }}/new:/downloads"
+        - "{{ nfs.mountpoint }}/tv:/tv"
+        - "{{ nfs.mountpoint }}/movies:/movies"
+    devices:
+        - "/dev/dri:/dev/dri::rwm"
+    ports:
+        - "8096:8096"
+        - "8920:8920"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
