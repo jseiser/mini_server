@@ -160,13 +160,11 @@ plex:
         UMASK: "{{ common.umask }}"
     volumes:
         - "{{ common.config_dir }}/plex/config:/config"
-        - "{{ common.config_dir }}/plex/iptv:/iptv"
         - "{{ nfs.mountpoint }}/new:/downloads"
         - "{{ nfs.mountpoint }}/tv:/tv"
         - "{{ nfs.mountpoint }}/movies:/movies"
-        - "/home/justin:/epg"
     devices:
-        - "/dev/dri:/dev/dri::rwm"
+        - "/dev/dri:/dev/dri"
     ports:
         - "32400:32400"
         - "1900:1900/udp"
