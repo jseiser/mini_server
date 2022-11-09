@@ -181,17 +181,34 @@
         - docker
         - sonarr
 
-    - name: EMBY
+    - name: PLEX
       community.docker.docker_container:
-        name: "{{ emby.name }}"
-        image: "{{ emby.image }}"
-        env: "{{ emby.vars }}"
-        volumes: "{{ emby.volumes }}"
-        ports: "{{ emby.ports }}"
-        restart_policy: "{{ emby.restart_policy }}"
-        state: "{{ emby.state }}"
+        name: "{{ plex.name }}"
+        image: "{{ plex.image }}"
+        env: "{{ plex.vars }}"
+        volumes: "{{ plex.volumes }}"
+        ports: "{{ plex.ports }}"
+        restart_policy: "{{ plex.restart_policy }}"
+        state: "{{ plex.state }}"
+        devices: "{{ plex.devices }}"
         networks:
-          - name: "{{ emby.network_name }}"
+          - name: "{{ plex.network_name }}"
       tags:
         - docker
-        - emby
+        - plex
+
+    - name: CALIBRE
+      community.docker.docker_container:
+        name: "{{ calibre.name }}"
+        image: "{{ calibre.image }}"
+        env: "{{ calibre.vars }}"
+        volumes: "{{ calibre.volumes }}"
+        ports: "{{ calibre.ports }}"
+        restart_policy: "{{ calibre.restart_policy }}"
+        state: "{{ calibre.state }}"
+        security_opts: "{{ calibre.security_opts }}"
+        networks:
+          - name: "{{ calibre.network_name }}"
+      tags:
+        - docker
+        - calibre

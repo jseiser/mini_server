@@ -149,24 +149,53 @@ sonarr:
     restart_policy: "{{ common.restart_policy }}"
     state: "{{ common.state }}"
 
-emby:
+plex:
     network_name: "{{ common.docker_network_name }}"
-    name: emby
-    image: "{{ common.registry }}/emby:{{ common.container_platform }}-4.7.9.0-ls134"
+    name: plex
+    image: "{{ common.registry }}/plex:{{ common.container_platform }}-1.29.2.6364-6d72b0cf6-ls143"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
         TZ: "{{ common.time_zone }}"
         UMASK: "{{ common.umask }}"
     volumes:
-        - "{{ common.config_dir }}/emby/config:/config"
+        - "{{ common.config_dir }}/plex/config:/config"
+        - "{{ common.config_dir }}/plex/iptv:/iptv"
         - "{{ nfs.mountpoint }}/new:/downloads"
         - "{{ nfs.mountpoint }}/tv:/tv"
         - "{{ nfs.mountpoint }}/movies:/movies"
+        - "/home/justin:/epg"
     devices:
         - "/dev/dri:/dev/dri::rwm"
     ports:
-        - "8096:8096"
-        - "8920:8920"
+        - "32400:32400"
+        - "1900:1900/udp"
+        - "3005:3005"
+        - "5353:5353/udp"
+        - "8324:8324"
+        - "32410:32410/udp"
+        - "32412:32412/udp"
+        - "32413:32413/udp"
+        - "32414:32414/udp"
+        - "32469:32469"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+
+calibre:
+    network_name: "{{ common.docker_network_name }}"
+    name: calibre
+    image: "{{ common.registry }}/calibre:{{ common.container_platform }}-v6.8.0-ls191"
+    vars:
+        PUID: "{{ common.uid }}"
+        PGID: "{{ common.gid }}"
+        TZ: "{{ common.time_zone }}"
+        UMASK: "{{ common.umask }}"
+    volumes:
+        - "{{ common.config_dir }}/calibre/config:/config"
+    ports:
+        - "9080:8080"
+        - "9081:8081"
+    security_opts:
+        - "seccomp:unconfined"
     restart_policy: "{{ common.restart_policy }}"
     state: "{{ common.state }}"
