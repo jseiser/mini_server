@@ -158,6 +158,8 @@ plex:
         PGID: "{{ common.gid }}"
         TZ: "{{ common.time_zone }}"
         UMASK: "{{ common.umask }}"
+        VERSION: "docker"
+        PLEX_CLAIM: "claim-f2fJbuJCtCK2FSjgd18i"
     volumes:
         - "{{ common.config_dir }}/plex/config:/config"
         - "{{ nfs.mountpoint }}/new:/downloads"
