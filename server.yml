@@ -141,11 +141,11 @@
         - docker
         - jackett
 
-    - name: JACKETT Restart
+    - name: JACKETT Restart # noqa no-handler
       community.docker.docker_container:
         name: "{{ jackett.name }}"
         image: "{{ jackett.image }}"
-        state: "restarted"
+        state: "started"
       when: jacket_files.changed
       tags:
         - docker
@@ -212,3 +212,130 @@
       tags:
         - docker
         - calibre
+
+    - name: CALIBRE_WEB
+      community.docker.docker_container:
+        name: "{{ calibre_web.name }}"
+        image: "{{ calibre_web.image }}"
+        env: "{{ calibre_web.vars }}"
+        volumes: "{{ calibre_web.volumes }}"
+        ports: "{{ calibre_web.ports }}"
+        restart_policy: "{{ calibre_web.restart_policy }}"
+        state: "{{ calibre_web.state }}"
+        networks:
+          - name: "{{ calibre_web.network_name }}"
+      tags:
+        - docker
+        - calibre
+        - calibre_web
+
+    - name: DUCKDNS
+      community.docker.docker_container:
+        name: "{{ duckdns.name }}"
+        image: "{{ duckdns.image }}"
+        env: "{{ duckdns.vars }}"
+        volumes: "{{ duckdns.volumes }}"
+        restart_policy: "{{ duckdns.restart_policy }}"
+        state: "{{ duckdns.state }}"
+        networks:
+          - name: "{{ duckdns.network_name }}"
+      tags:
+        - docker
+        - duckdns
+
+
+    - name: PROMETHEUS volume
+      community.docker.docker_volume:
+        name: prometheus_data
+      tags:
+        - docker
+        - monitoring
+        - prometheus
+
+    - name: PROMETHEUS Dir
+      ansible.builtin.file:
+        path: "{{ common.config_dir }}/prometheus"
+        state: directory
+        mode: '0755'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+      tags:
+        - docker
+        - monitoring
+        - prometheus
+      register: jacket_files
+
+    - name: PROMETHEUS Configs
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ common.config_dir }}/prometheus/{{ item }}"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0644'
+      loop:
+        - prometheus.yml
+      register: prom_config
+      tags:
+        - docker
+        - monitoring
+        - prometheus
+
+    - name: PROMETHEUS
+      community.docker.docker_container:
+        name: "{{ prometheus.name }}"
+        image: "{{ prometheus.image }}"
+        volumes: "{{ prometheus.volumes }}"
+        restart_policy: "{{ prometheus.restart_policy }}"
+        state: "{{ prometheus.state }}"
+        ports: "{{ prometheus.ports }}"
+        command: "{{ prometheus.command }}"
+        networks:
+          - name: "{{ prometheus.network_name }}"
+      tags:
+        - docker
+        - monitoring
+        - prometheus
+
+    - name: PROMETHEUS Restart # noqa no-handler
+      community.docker.docker_container:
+        name: "{{ prometheus.name }}"
+        image: "{{ prometheus.image }}"
+        state: "started"
+      when: prom_config.changed
+      tags:
+        - docker
+        - monitoring
+        - prometheus
+
+    - name: NODE_EXPORTER
+      community.docker.docker_container:
+        name: "{{ node_exporter.name }}"
+        image: "{{ node_exporter.image }}"
+        restart_policy: "{{ node_exporter.restart_policy }}"
+        state: "{{ node_exporter.state }}"
+        volumes: "{{ node_exporter.volumes }}"
+        ports: "{{ node_exporter.ports }}"
+        command: "{{ node_exporter.command }}"
+        networks:
+          - name: "{{ node_exporter.network_name }}"
+      tags:
+        - docker
+        - monitoring
+        - node_exporter
+
+    - name: CADVISOR
+      community.docker.docker_container:
+        name: "{{ cadvisor.name }}"
+        image: "{{ cadvisor.image }}"
+        restart_policy: "{{ cadvisor.restart_policy }}"
+        state: "{{ cadvisor.state }}"
+        volumes: "{{ cadvisor.volumes }}"
+        devices: "{{ cadvisor.devices }}"
+        ports: "{{ cadvisor.ports }}"
+        privileged: "{{ cadvisor.privileged }}"
+        networks:
+          - name: "{{ cadvisor.network_name }}"
+      tags:
+        - docker
+        - monitoring
+        - cadvisor
