@@ -7,6 +7,22 @@ ansible_become_password: !vault |
     6131383333303732330a656536356436323462623265616230373837393132663661323831623763
     6131
 
+grafana_user: !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    34656164613266383135643630653739383166613235323161323834303330356563653431313763
+    3036663964313364386165623232376633303765646630630a373131346635313833316239363434
+    36653637623239323636646535383361663638346166663566613937353632626462336337363863
+    3261316638333936300a633864623731633462633937373164303435376266396630313236646331
+    6561
+
+grafana_password: !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    35636566363766383139633839396466663135623239616132653033363132663465363331363064
+    3037656261373363383637313635383166646466343438620a323465313838663665363965323834
+    63613039646263656363313938353465366639623763666663656166323830316365396562613366
+    3366623336306532390a383231653838626162353732396666616639636232396565313132353065
+    3036
+
 base_packages:
     - nfs-common
     - nfs4-acl-tools
@@ -287,5 +303,22 @@ cadvisor:
         - "/dev/disk/:/dev/disk:ro"
     ports:
         - "8088:8080"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+
+grafana:
+    network_name: "{{ common.docker_network_name }}"
+    name: grafana
+    image: "grafana/grafana:9.2.5"
+    ports:
+        - "3000:3000"
+    volumes:
+        - "{{ common.config_dir }}/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro"
+        - "{{ common.config_dir }}/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro"
+        - "grafana_data:/var/lib/grafana"
+    vars:
+        GF_SECURITY_ADMIN_USER: "{{ grafana_user }}"
+        GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_password }}"
+        GF_USERS_ALLOW_SIGN_UP: "false"
     restart_policy: "{{ common.restart_policy }}"
     state: "{{ common.state }}"

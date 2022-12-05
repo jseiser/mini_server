@@ -339,3 +339,88 @@
         - docker
         - monitoring
         - cadvisor
+
+    - name: GRAFANA volume
+      community.docker.docker_volume:
+        name: grafana_data
+      tags:
+        - docker
+        - monitoring
+        - grafana
+
+    - name: GRAFANA Dir
+      ansible.builtin.file:
+        path: "{{ common.config_dir }}/{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+      loop:
+        - "grafana"
+        - "grafana/provisioning"
+        - "grafana/provisioning/dashboards"
+        - "grafana/provisioning/datasources"
+      tags:
+        - docker
+        - monitoring
+        - grafana
+
+    - name: GRAFANA Datasources
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ common.config_dir }}/grafana/provisioning/datasources/{{ item }}"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0644'
+      loop:
+        - datasource.yml
+      register: grafana_ds
+      tags:
+        - docker
+        - monitoring
+        - grafana
+
+
+    - name: GRAFANA Dashboards
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ common.config_dir }}/grafana/provisioning/dashboards/{{ item }}"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0644'
+      loop:
+        - dashboard.yml
+      register: grafana_db
+      tags:
+        - docker
+        - monitoring
+        - grafana
+
+    - name: GRAFANA
+      community.docker.docker_container:
+        name: "{{ grafana.name }}"
+        image: "{{ grafana.image }}"
+        volumes: "{{ grafana.volumes }}"
+        restart_policy: "{{ grafana.restart_policy }}"
+        state: "{{ grafana.state }}"
+        ports: "{{ grafana.ports }}"
+        env: "{{ grafana.vars }}"
+        networks:
+          - name: "{{ grafana.network_name }}"
+      tags:
+        - docker
+        - monitoring
+        - grafana
+
+    - name: GRAFANA Restart # noqa no-handler
+      community.docker.docker_container:
+        name: "{{ grafana.name }}"
+        image: "{{ grafana.image }}"
+        state: "started"
+      when:
+        - grafana_db.changed
+        - grafana_ds.changed
+      tags:
+        - docker
+        - monitoring
+        - grafana
