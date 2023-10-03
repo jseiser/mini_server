@@ -60,7 +60,7 @@ pip_install_packages:
 sabnzbd:
     network_name: "{{ common.docker_network_name }}"
     name: sabnzbd
-    image: "{{ common.ls_registry }}/sabnzbd:{{ common.container_platform }}-4.0.1-ls108"
+    image: "{{ common.ls_registry }}/sabnzbd:{{ common.container_platform }}-4.1.0-ls128"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -78,7 +78,7 @@ sabnzbd:
 deluge:
     network_name: "{{ common.docker_network_name }}"
     name: deluge
-    image: "{{ common.ls_registry }}/deluge:{{ common.container_platform }}-2.1.1-r7-ls208"
+    image: "{{ common.ls_registry }}/deluge:{{ common.container_platform }}-2.1.1-r8-ls232"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -97,7 +97,7 @@ deluge:
 nzbhydra2:
     network_name: "{{ common.docker_network_name }}"
     name: nzbhydra2
-    image: "{{ common.ls_registry }}/nzbhydra2:{{ common.container_platform }}-v5.1.8-ls99"
+    image: "{{ common.ls_registry }}/nzbhydra2:{{ common.container_platform }}-v5.1.11-ls111"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -114,7 +114,7 @@ nzbhydra2:
 jackett:
     network_name: "{{ common.docker_network_name }}"
     name: jackett
-    image: "{{ common.ls_registry }}/jackett:{{ common.container_platform }}-v0.21.14-ls106"
+    image: "{{ common.ls_registry }}/jackett:{{ common.container_platform }}-v0.21.950-ls179"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -132,7 +132,7 @@ jackett:
 radarr:
     network_name: "{{ common.docker_network_name }}"
     name: radarr
-    image: "{{ common.ls_registry }}/radarr:{{ common.container_platform }}-4.4.4.7068-ls172"
+    image: "{{ common.ls_registry }}/radarr:{{ common.container_platform }}-4.7.5.7809-ls189"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -150,7 +150,7 @@ radarr:
 sonarr:
     network_name: "{{ common.docker_network_name }}"
     name: sonarr
-    image: "{{ common.ls_registry }}/sonarr:{{ common.container_platform }}-3.0.10.1567-ls192"
+    image: "{{ common.ls_registry }}/sonarr:{{ common.container_platform }}-develop-4.0.0.688-ls581"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -168,7 +168,7 @@ sonarr:
 plex:
     network_name: "{{ common.docker_network_name }}"
     name: plex
-    image: "{{ common.ls_registry }}/plex:{{ common.container_platform }}-1.32.1.6999-91e1e2e2c-ls167"
+    image: "{{ common.ls_registry }}/plex:{{ common.container_platform }}-1.32.6.7557-1cf77d501-ls186"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -199,7 +199,7 @@ plex:
 calibre:
     network_name: "{{ common.docker_network_name }}"
     name: calibre
-    image: "{{ common.ls_registry }}/calibre:{{ common.container_platform }}-v6.17.0-ls220"
+    image: "{{ common.ls_registry }}/calibre:{{ common.container_platform }}-v6.27.0-ls240"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -219,7 +219,7 @@ calibre:
 calibre_web:
     network_name: "{{ common.docker_network_name }}"
     name: calibre-web
-    image: "{{ common.ls_registry }}/calibre-web:{{ common.container_platform }}-0.6.20-ls211"
+    image: "{{ common.ls_registry }}/calibre-web:{{ common.container_platform }}-0.6.20-ls231"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -238,7 +238,7 @@ calibre_web:
 duckdns:
     network_name: "{{ common.docker_network_name }}"
     name: duckdns
-    image: "{{ common.ls_registry }}/duckdns:{{ common.container_platform }}-fb872cca-ls130"
+    image: "{{ common.ls_registry }}/duckdns:{{ common.container_platform }}-57be0a3b-ls144"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
