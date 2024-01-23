@@ -1,7 +1,6 @@
 - name: MiniServer
   hosts: miniserver
   tasks:
-
     - name: Install Base Packages
       become: true
       ansible.builtin.apt:
@@ -116,7 +115,7 @@
       ansible.builtin.file:
         path: "{{ common.config_dir }}/jackett/config/{{ item }}"
         state: directory
-        mode: '0755'
+        mode: "0755"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
       loop:
@@ -133,7 +132,7 @@
         dest: "{{ common.config_dir }}/jackett/config/cardigann/definitions/{{ item }}"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
-        mode: '0644'
+        mode: "0644"
       loop:
         - hpjradarr.yml
         - hpjsonarr.yml
@@ -243,7 +242,6 @@
         - docker
         - duckdns
 
-
     - name: PROMETHEUS volume
       community.docker.docker_volume:
         name: prometheus_data
@@ -256,7 +254,7 @@
       ansible.builtin.file:
         path: "{{ common.config_dir }}/prometheus"
         state: directory
-        mode: '0755'
+        mode: "0755"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
       tags:
@@ -271,7 +269,7 @@
         dest: "{{ common.config_dir }}/prometheus/{{ item }}"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
-        mode: '0644'
+        mode: "0644"
       loop:
         - prometheus.yml
       register: prom_config
@@ -352,7 +350,7 @@
       ansible.builtin.file:
         path: "{{ common.config_dir }}/{{ item }}"
         state: directory
-        mode: '0755'
+        mode: "0755"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
       loop:
@@ -371,7 +369,7 @@
         dest: "{{ common.config_dir }}/grafana/provisioning/datasources/{{ item }}"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
-        mode: '0644'
+        mode: "0644"
       loop:
         - datasource.yml
       register: grafana_ds
@@ -380,14 +378,13 @@
         - monitoring
         - grafana
 
-
     - name: GRAFANA Dashboards
       ansible.builtin.copy:
         src: "{{ item }}"
         dest: "{{ common.config_dir }}/grafana/provisioning/dashboards/{{ item }}"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
-        mode: '0644'
+        mode: "0644"
       loop:
         - dashboard.yml
       register: grafana_db
@@ -424,3 +421,41 @@
         - docker
         - monitoring
         - grafana
+
+    - name: Create PalWorld Docker Network
+      community.docker.docker_network:
+        name: "palworld"
+      tags:
+        - docker
+        - palworld
+
+    - name: PALWORLD
+      community.docker.docker_container:
+        name: "{{ palworld.name }}"
+        image: "{{ palworld.image }}"
+        volumes: "{{ palworld.volumes }}"
+        restart_policy: "{{ palworld.restart_policy }}"
+        state: "{{ palworld.state }}"
+        ports: "{{ palworld.ports }}"
+        env: "{{ palworld.vars }}"
+        networks:
+          - name: "{{ palworld.network_name }}"
+          - name: "palworld"
+      tags:
+        - docker
+        - palworld
+
+    - name: RCON
+      community.docker.docker_container:
+        name: "{{ rcon.name }}"
+        image: "{{ rcon.image }}"
+        restart_policy: "{{ rcon.restart_policy }}"
+        state: "{{ rcon.state }}"
+        entrypoint: "{{ rcon.entrypoint }}"
+        networks:
+          - name: "{{ rcon.network_name }}"
+          - name: "palworld"
+      tags:
+        - docker
+        - palworld
+        - rcon

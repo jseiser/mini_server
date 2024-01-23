@@ -322,3 +322,37 @@ grafana:
         GF_USERS_ALLOW_SIGN_UP: "false"
     restart_policy: "{{ common.restart_policy }}"
     state: "{{ common.state }}"
+
+palworld:
+    network_name: "{{ common.docker_network_name }}"
+    name: palworld-dedicated-server
+    image: "jammsen/palworld-dedicated-server@sha256:59e72905b9eb029167051f607b3be5c25e69f087a428960287beade9649d7e70"
+    ports:
+        - "8211:8211/udp"
+        - "25575:25575"
+    volumes:
+        - "{{ common.config_dir }}/palworld:/palworld"
+    vars:
+        ALWAYS_UPDATE_ON_START: "true"
+        MAX_PLAYERS: "4"
+        MULTITHREAD_ENABLED: "true"
+        COMMUNITY_SERVER: "false"
+        RCON_ENABLED: "true"
+        RCON_PORT: "25575"
+        PUBLIC_IP: "198.101.59.112"
+        PUBLIC_PORT: "8211"
+        SERVER_NAME: "RIP-ONGOD-GUCCI"
+        SERVER_DESCRIPTION: "Scummy Pokemon"
+        SERVER_PASSWORD: "i3pebRglZ2bRozR"
+        ADMIN_PASSWORD: "52qbqld6hondPnT"
+        BACKUP: "false"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+
+rcon:
+    network_name: "{{ common.docker_network_name }}"
+    name: rcon
+    image: "outdead/rcon@sha256:8bf03935771ae6b44449eb8e74e1f4d249ead591e9c1e4e43539d33be1a3ac67"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+    entrypoint: ["/rcon", "-a", "198.101.59.112:25575", "-p", "52qbqld6hondPnT"]
