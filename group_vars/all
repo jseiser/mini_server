@@ -326,7 +326,7 @@ grafana:
 palworld:
     network_name: "{{ common.docker_network_name }}"
     name: palworld-dedicated-server
-    image: "jammsen/palworld-dedicated-server@sha256:59e72905b9eb029167051f607b3be5c25e69f087a428960287beade9649d7e70"
+    image: "jammsen/palworld-dedicated-server:75b897e"
     ports:
         - "8211:8211/udp"
         - "25575:25575"
@@ -354,5 +354,5 @@ rcon:
     name: rcon
     image: "outdead/rcon@sha256:8bf03935771ae6b44449eb8e74e1f4d249ead591e9c1e4e43539d33be1a3ac67"
     restart_policy: "{{ common.restart_policy }}"
-    state: "{{ common.state }}"
-    entrypoint: ["/rcon", "-a", "198.101.59.112:25575", "-p", "52qbqld6hondPnT"]
+    state: "stopped"
+    entrypoint: ["/rcon", "-a", "palworld:25575", "-p", "52qbqld6hondPnT"]
