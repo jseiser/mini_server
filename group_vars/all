@@ -326,7 +326,7 @@ grafana:
 palworld:
     network_name: "{{ common.docker_network_name }}"
     name: palworld-dedicated-server
-    image: "jammsen/palworld-dedicated-server:75b897e"
+    image: "jammsen/palworld-dedicated-server:d2822bf"
     ports:
         - "8211:8211/udp"
         - "25575:25575"
