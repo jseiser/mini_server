@@ -196,6 +196,22 @@
         - docker
         - plex
 
+    - name: JELLYFIN
+      community.docker.docker_container:
+        name: "{{ jellyfin.name }}"
+        image: "{{ jellyfin.image }}"
+        env: "{{ jellyfin.vars }}"
+        volumes: "{{ jellyfin.volumes }}"
+        ports: "{{ jellyfin.ports }}"
+        restart_policy: "{{ jellyfin.restart_policy }}"
+        state: "{{ jellyfin.state }}"
+        devices: "{{ jellyfin.devices }}"
+        networks:
+          - name: "{{ jellyfin.network_name }}"
+      tags:
+        - docker
+        - jellyfin
+
     - name: CALIBRE
       community.docker.docker_container:
         name: "{{ calibre.name }}"

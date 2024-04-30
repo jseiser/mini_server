@@ -196,6 +196,29 @@ plex:
     restart_policy: "{{ common.restart_policy }}"
     state: "{{ common.state }}"
 
+jellyfin:
+    network_name: "{{ common.docker_network_name }}"
+    name: plex
+    image: "{{ common.ls_registry }}/jellyfin:{{ common.container_platform }}-10.8.13"
+    vars:
+        PUID: "{{ common.uid }}"
+        PGID: "{{ common.gid }}"
+        TZ: "{{ common.time_zone }}"
+        UMASK: "{{ common.umask }}"
+        JELLYFIN_PublishedServerUrl: "192.168.121.98"
+    volumes:
+        - "{{ common.config_dir }}/jellyfin/config:/config"
+        - "{{ nfs.mountpoint }}/new:/downloads"
+        - "{{ nfs.mountpoint }}/tv:/tv"
+        - "{{ nfs.mountpoint }}/movies:/movies"
+    devices:
+        - "/dev/dri:/dev/dri"
+    ports:
+        - "8096:8096"
+        - "8920:8920"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+
 calibre:
     network_name: "{{ common.docker_network_name }}"
     name: calibre
