@@ -168,7 +168,7 @@ sonarr:
 plex:
     network_name: "{{ common.docker_network_name }}"
     name: plex
-    image: "{{ common.ls_registry }}/plex:{{ common.container_platform }}-1.32.8.7639-fb6452ebf-ls201"
+    image: "{{ common.ls_registry }}/plex:{{ common.container_platform }}-1.40.2"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
