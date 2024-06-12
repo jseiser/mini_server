@@ -60,7 +60,7 @@ pip_install_packages:
 sabnzbd:
     network_name: "{{ common.docker_network_name }}"
     name: sabnzbd
-    image: "{{ common.ls_registry }}/sabnzbd:{{ common.container_platform }}-4.2.1-ls146"
+    image: "{{ common.ls_registry }}/sabnzbd:{{ common.container_platform }}-4.3.2-ls165"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -78,7 +78,7 @@ sabnzbd:
 deluge:
     network_name: "{{ common.docker_network_name }}"
     name: deluge
-    image: "{{ common.ls_registry }}/deluge:{{ common.container_platform }}-2.1.1-r8-ls250"
+    image: "{{ common.ls_registry }}/deluge:{{ common.container_platform }}-2.1.1-r10-ls273"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -97,7 +97,7 @@ deluge:
 nzbhydra2:
     network_name: "{{ common.docker_network_name }}"
     name: nzbhydra2
-    image: "{{ common.ls_registry }}/nzbhydra2:{{ common.container_platform }}-v5.3.5-ls125"
+    image: "{{ common.ls_registry }}/nzbhydra2:{{ common.container_platform }}-v7.2.3-ls12"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -114,7 +114,7 @@ nzbhydra2:
 jackett:
     network_name: "{{ common.docker_network_name }}"
     name: jackett
-    image: "{{ common.ls_registry }}/jackett:{{ common.container_platform }}-v0.21.1588-ls283"
+    image: "{{ common.ls_registry }}/jackett:{{ common.container_platform }}-v0.22.106-ls431"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -150,7 +150,7 @@ radarr:
 sonarr:
     network_name: "{{ common.docker_network_name }}"
     name: sonarr
-    image: "{{ common.ls_registry }}/sonarr:{{ common.container_platform }}-develop-4.0.1.953-ls30"
+    image: "{{ common.ls_registry }}/sonarr:{{ common.container_platform }}-4.0.5.1710-ls241"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -199,7 +199,7 @@ plex:
 jellyfin:
     network_name: "{{ common.docker_network_name }}"
     name: plex
-    image: "{{ common.ls_registry }}/jellyfin:{{ common.container_platform }}-10.8.13"
+    image: "{{ common.ls_registry }}/jellyfin:{{ common.container_platform }}-10.9.6"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
