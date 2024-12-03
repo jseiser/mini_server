@@ -60,7 +60,7 @@ pip_install_packages:
 sabnzbd:
     network_name: "{{ common.docker_network_name }}"
     name: sabnzbd
-    image: "{{ common.ls_registry }}/sabnzbd:{{ common.container_platform }}-4.3.3-ls186"
+    image: "{{ common.ls_registry }}/sabnzbd:{{ common.container_platform }}-4.3.3-ls191"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -78,7 +78,7 @@ sabnzbd:
 deluge:
     network_name: "{{ common.docker_network_name }}"
     name: deluge
-    image: "{{ common.ls_registry }}/deluge:{{ common.container_platform }}-2.1.1-r10-ls295"
+    image: "{{ common.ls_registry }}/deluge:{{ common.container_platform }}-2.1.1-r10-ls301"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -97,7 +97,7 @@ deluge:
 nzbhydra2:
     network_name: "{{ common.docker_network_name }}"
     name: nzbhydra2
-    image: "{{ common.ls_registry }}/nzbhydra2:{{ common.container_platform }}-v7.8.0-ls28"
+    image: "{{ common.ls_registry }}/nzbhydra2:{{ common.container_platform }}-v7.10.2-ls32"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -114,7 +114,7 @@ nzbhydra2:
 jackett:
     network_name: "{{ common.docker_network_name }}"
     name: jackett
-    image: "{{ common.ls_registry }}/jackett:{{ common.container_platform }}-v0.22.825-ls567"
+    image: "{{ common.ls_registry }}/jackett:{{ common.container_platform }}-v0.22.1027-ls610"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -132,7 +132,7 @@ jackett:
 radarr:
     network_name: "{{ common.docker_network_name }}"
     name: radarr
-    image: "{{ common.ls_registry }}/radarr:{{ common.container_platform }}-5.12.2.9335-ls242"
+    image: "{{ common.ls_registry }}/radarr:{{ common.container_platform }}-5.15.1.9463-ls247"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -150,7 +150,7 @@ radarr:
 sonarr:
     network_name: "{{ common.docker_network_name }}"
     name: sonarr
-    image: "{{ common.ls_registry }}/sonarr:{{ common.container_platform }}-4.0.9.2244-ls257"
+    image: "{{ common.ls_registry }}/sonarr:{{ common.container_platform }}-4.0.11.2680-ls260"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -198,8 +198,8 @@ plex:
 
 jellyfin:
     network_name: "{{ common.docker_network_name }}"
-    name: plex
-    image: "{{ common.ls_registry }}/jellyfin:{{ common.container_platform }}-10.9.11"
+    name: jellyfin
+    image: "{{ common.ls_registry }}/jellyfin:{{ common.container_platform }}-10.10.3"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -222,7 +222,7 @@ jellyfin:
 calibre:
     network_name: "{{ common.docker_network_name }}"
     name: calibre
-    image: "{{ common.ls_registry }}/calibre:{{ common.container_platform }}-v7.20.0-ls307"
+    image: "{{ common.ls_registry }}/calibre:{{ common.container_platform }}-v7.22.0-ls312"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -242,7 +242,7 @@ calibre:
 calibre_web:
     network_name: "{{ common.docker_network_name }}"
     name: calibre-web
-    image: "{{ common.ls_registry }}/calibre-web:{{ common.container_platform }}-0.6.23-ls295"
+    image: "{{ common.ls_registry }}/calibre-web:{{ common.container_platform }}-0.6.24-ls302"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -261,7 +261,7 @@ calibre_web:
 duckdns:
     network_name: "{{ common.docker_network_name }}"
     name: duckdns
-    image: "{{ common.ls_registry }}/duckdns:{{ common.container_platform }}-cd710f3e-ls33"
+    image: "{{ common.ls_registry }}/duckdns:{{ common.container_platform }}-6f8a1609-ls35"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -277,7 +277,7 @@ duckdns:
 prometheus:
     network_name: "{{ common.docker_network_name }}"
     name: prometheus
-    image: "prom/prometheus:v2.49.1"
+    image: "prom/prometheus:v3.0.1"
     ports:
         - "9090:9090"
     volumes:
@@ -296,7 +296,7 @@ prometheus:
 node_exporter:
     network_name: "{{ common.docker_network_name }}"
     name: node-exporter
-    image: "prom/node-exporter:v1.7.0"
+    image: "prom/node-exporter:v1.8.2"
     ports:
         - "9100:9100"
     volumes:
@@ -314,7 +314,7 @@ node_exporter:
 cadvisor:
     network_name: "{{ common.docker_network_name }}"
     name: cadvisor
-    image: "gcr.io/cadvisor/cadvisor:v0.47.2"
+    image: "gcr.io/cadvisor/cadvisor:v0.49.1"
     privileged: yes
     devices:
         - /dev/kmsg:/dev/kmsg
@@ -332,7 +332,7 @@ cadvisor:
 grafana:
     network_name: "{{ common.docker_network_name }}"
     name: grafana
-    image: "grafana/grafana:10.0.10"
+    image: "grafana/grafana:11.3.1"
     ports:
         - "3000:3000"
     volumes:
