@@ -23,6 +23,15 @@ grafana_password: !vault |
     3366623336306532390a383231653838626162353732396666616639636232396565313132353065
     3036
 
+cron_api: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          35633065333562353236666363323238653538386432333238633730626665636663393534643265
+          6331343661653030633665353035333038616434323763390a393938346431646562376138306432
+          63653431653732393761643362343238393636623235623763363839626166373866656663393136
+          6562306333376166320a383931303261613466313961363462323139633636663166313964323232
+          31363633303564663461616365656234353536303462363265343530376331633665666539366337
+          3761656133636439623662666234303965333039653938396633
+
 base_packages:
     - nfs-common
     - nfs4-acl-tools
@@ -60,7 +69,7 @@ pip_install_packages:
 sabnzbd:
     network_name: "{{ common.docker_network_name }}"
     name: sabnzbd
-    image: "{{ common.ls_registry }}/sabnzbd:{{ common.container_platform }}-4.3.3-ls191"
+    image: "{{ common.ls_registry }}/sabnzbd:{{ common.container_platform }}-4.4.1-ls204"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -78,7 +87,7 @@ sabnzbd:
 deluge:
     network_name: "{{ common.docker_network_name }}"
     name: deluge
-    image: "{{ common.ls_registry }}/deluge:{{ common.container_platform }}-2.1.1-r10-ls301"
+    image: "{{ common.ls_registry }}/deluge:{{ common.container_platform }}-2.1.1-r10-ls317"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -97,7 +106,7 @@ deluge:
 nzbhydra2:
     network_name: "{{ common.docker_network_name }}"
     name: nzbhydra2
-    image: "{{ common.ls_registry }}/nzbhydra2:{{ common.container_platform }}-v7.10.2-ls32"
+    image: "{{ common.ls_registry }}/nzbhydra2:{{ common.container_platform }}-v7.12.3-ls41"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -114,7 +123,7 @@ nzbhydra2:
 jackett:
     network_name: "{{ common.docker_network_name }}"
     name: jackett
-    image: "{{ common.ls_registry }}/jackett:{{ common.container_platform }}-v0.22.1027-ls610"
+    image: "{{ common.ls_registry }}/jackett:{{ common.container_platform }}-v0.22.1471-ls695"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -132,7 +141,7 @@ jackett:
 radarr:
     network_name: "{{ common.docker_network_name }}"
     name: radarr
-    image: "{{ common.ls_registry }}/radarr:{{ common.container_platform }}-5.15.1.9463-ls247"
+    image: "{{ common.ls_registry }}/radarr:{{ common.container_platform }}-5.19.3.9730-ls261"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -150,7 +159,7 @@ radarr:
 sonarr:
     network_name: "{{ common.docker_network_name }}"
     name: sonarr
-    image: "{{ common.ls_registry }}/sonarr:{{ common.container_platform }}-4.0.11.2680-ls260"
+    image: "{{ common.ls_registry }}/sonarr:{{ common.container_platform }}-4.0.13.2932-ls272"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -168,7 +177,7 @@ sonarr:
 plex:
     network_name: "{{ common.docker_network_name }}"
     name: plex
-    image: "{{ common.ls_registry }}/plex:{{ common.container_platform }}-1.40.2"
+    image: "{{ common.ls_registry }}/plex:{{ common.container_platform }}-1.41.4"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -199,7 +208,7 @@ plex:
 jellyfin:
     network_name: "{{ common.docker_network_name }}"
     name: jellyfin
-    image: "{{ common.ls_registry }}/jellyfin:{{ common.container_platform }}-10.10.3"
+    image: "{{ common.ls_registry }}/jellyfin:{{ common.container_platform }}-10.10.6"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -222,7 +231,7 @@ jellyfin:
 calibre:
     network_name: "{{ common.docker_network_name }}"
     name: calibre
-    image: "{{ common.ls_registry }}/calibre:{{ common.container_platform }}-v7.22.0-ls312"
+    image: "{{ common.ls_registry }}/calibre:{{ common.container_platform }}-v7.26.0-ls324"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -242,7 +251,7 @@ calibre:
 calibre_web:
     network_name: "{{ common.docker_network_name }}"
     name: calibre-web
-    image: "{{ common.ls_registry }}/calibre-web:{{ common.container_platform }}-0.6.24-ls302"
+    image: "{{ common.ls_registry }}/calibre-web:{{ common.container_platform }}-0.6.24-ls317"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -261,7 +270,7 @@ calibre_web:
 duckdns:
     network_name: "{{ common.docker_network_name }}"
     name: duckdns
-    image: "{{ common.ls_registry }}/duckdns:{{ common.container_platform }}-6f8a1609-ls35"
+    image: "{{ common.ls_registry }}/duckdns:{{ common.container_platform }}-bf8528ec-ls46"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -277,7 +286,7 @@ duckdns:
 prometheus:
     network_name: "{{ common.docker_network_name }}"
     name: prometheus
-    image: "prom/prometheus:v3.0.1"
+    image: "prom/prometheus:v3.2.1"
     ports:
         - "9090:9090"
     volumes:
@@ -296,7 +305,7 @@ prometheus:
 node_exporter:
     network_name: "{{ common.docker_network_name }}"
     name: node-exporter
-    image: "prom/node-exporter:v1.8.2"
+    image: "prom/node-exporter:v1.9.0"
     ports:
         - "9100:9100"
     volumes:
@@ -332,7 +341,7 @@ cadvisor:
 grafana:
     network_name: "{{ common.docker_network_name }}"
     name: grafana
-    image: "grafana/grafana:11.3.1"
+    image: "grafana/grafana:11.5.2"
     ports:
         - "3000:3000"
     volumes:
@@ -343,5 +352,26 @@ grafana:
         GF_SECURITY_ADMIN_USER: "{{ grafana_user }}"
         GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_password }}"
         GF_USERS_ALLOW_SIGN_UP: "false"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+
+iptvboss:
+    network_name: "{{ common.docker_network_name }}"
+    name: iptvboss
+    image: "ghcr.io/groenator/iptvboss-docker:3.5.2.0"
+    ports:
+        - "8001:8001"
+        - "5901:5901"
+        - "6901:6901"
+    volumes:
+        - "{{ common.config_dir }}/iptvboss:/headless/IPTVBoss"
+    vars:
+        PUID: "{{ common.uid }}"
+        PGID: "{{ common.gid }}"
+        CRON_SCHEDULE: "0 0 * * *"
+        CRONITOR_API_KEY: "{{ cron_api }}"
+        CRONITOR_SCHEDULE_NAME: "BOSS"
+        XC_SERVER: "true"
+        TZ: "US/Eastern"
     restart_policy: "{{ common.restart_policy }}"
     state: "{{ common.state }}"

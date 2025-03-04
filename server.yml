@@ -438,9 +438,17 @@
         - monitoring
         - grafana
 
-    - name: Create PalWorld Docker Network
-      community.docker.docker_network:
-        name: "palworld"
+    - name: IPTVBOSS
+      community.docker.docker_container:
+        name: "{{ iptvboss.name }}"
+        image: "{{ iptvboss.image }}"
+        env: "{{ iptvboss.vars }}"
+        ports: "{{ iptvboss.ports }}"
+        volumes: "{{ iptvboss.volumes }}"
+        restart_policy: "{{ iptvboss.restart_policy }}"
+        state: "{{ iptvboss.state }}"
+        networks:
+          - name: "{{ iptvboss.network_name }}"
       tags:
         - docker
-        - palworld
+        - iptvboss
