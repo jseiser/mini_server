@@ -208,7 +208,7 @@ plex:
 jellyfin:
     network_name: "{{ common.docker_network_name }}"
     name: jellyfin
-    image: "{{ common.ls_registry }}/jellyfin:{{ common.container_platform }}-10.10.6"
+    image: "{{ common.ls_registry }}/jellyfin:{{ common.container_platform }}-10.10.7"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -358,7 +358,7 @@ grafana:
 iptvboss:
     network_name: "{{ common.docker_network_name }}"
     name: iptvboss
-    image: "ghcr.io/groenator/iptvboss-docker:3.5.2.0"
+    image: "ghcr.io/groenator/iptvboss-docker:3.9.17"
     ports:
         - "8001:8001"
         - "5901:5901"
