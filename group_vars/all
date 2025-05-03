@@ -358,7 +358,7 @@ grafana:
 iptvboss:
     network_name: "{{ common.docker_network_name }}"
     name: iptvboss
-    image: "ghcr.io/groenator/iptvboss-docker:3.9.17"
+    image: "ghcr.io/groenator/iptvboss-docker:3.9.33"
     ports:
         - "8001:8001"
         - "5901:5901"
