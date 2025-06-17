@@ -51,6 +51,21 @@
       tags:
         - docker
 
+    - name: PIHOLE
+      community.docker.docker_container:
+        name: "{{ pihole.name }}"
+        image: "{{ pihole.image }}"
+        env: "{{ pihole.vars }}"
+        volumes: "{{ pihole.volumes }}"
+        ports: "{{ pihole.ports }}"
+        restart_policy: "{{ pihole.restart_policy }}"
+        state: "{{ pihole.state }}"
+        networks:
+          - name: "{{ pihole.network_name }}"
+      tags:
+        - docker
+        - pihole
+
     - name: SABNZBD
       community.docker.docker_container:
         name: "{{ sabnzbd.name }}"

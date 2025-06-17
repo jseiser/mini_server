@@ -66,6 +66,22 @@ docker_users:
 pip_install_packages:
     - name: docker
 
+pihole:
+    network_name: "{{ common.docker_network_name }}"
+    name: pihole
+    image: "pihole/pihole:2025.06.2"
+    vars:
+        TZ: "{{ common.time_zone }}"
+    volumes:
+        - "{{ common.config_dir }}/pihole:/etc/pihole"
+    ports:
+        - "53:53/tcp"
+        - "53:53/udp"
+        - "80:80/tcp"
+        - "443:443/tcp"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+
 sabnzbd:
     network_name: "{{ common.docker_network_name }}"
     name: sabnzbd
@@ -358,7 +374,7 @@ grafana:
 iptvboss:
     network_name: "{{ common.docker_network_name }}"
     name: iptvboss
-    image: "ghcr.io/groenator/iptvboss-docker:3.9.44"
+    image: "ghcr.io/groenator/iptvboss-docker:3.9.50"
     ports:
         - "8001:8001"
         - "5901:5901"
