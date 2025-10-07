@@ -69,7 +69,7 @@ pip_install_packages:
 pihole:
     network_name: "{{ common.docker_network_name }}"
     name: pihole
-    image: "pihole/pihole:2025.06.2"
+    image: "pihole/pihole:2025.08.0"
     vars:
         TZ: "{{ common.time_zone }}"
     volumes:
@@ -85,7 +85,7 @@ pihole:
 sabnzbd:
     network_name: "{{ common.docker_network_name }}"
     name: sabnzbd
-    image: "{{ common.ls_registry }}/sabnzbd:{{ common.container_platform }}-4.4.1-ls204"
+    image: "{{ common.ls_registry }}/sabnzbd:{{ common.container_platform }}-4.5.3-ls230"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -103,7 +103,7 @@ sabnzbd:
 deluge:
     network_name: "{{ common.docker_network_name }}"
     name: deluge
-    image: "{{ common.ls_registry }}/deluge:{{ common.container_platform }}-2.1.1-r10-ls317"
+    image: "{{ common.ls_registry }}/deluge:{{ common.container_platform }}-2.2.0-r1-ls347"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -122,7 +122,7 @@ deluge:
 nzbhydra2:
     network_name: "{{ common.docker_network_name }}"
     name: nzbhydra2
-    image: "{{ common.ls_registry }}/nzbhydra2:{{ common.container_platform }}-v7.12.3-ls41"
+    image: "{{ common.ls_registry }}/nzbhydra2:{{ common.container_platform }}-v7.19.2-ls65"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -139,7 +139,7 @@ nzbhydra2:
 jackett:
     network_name: "{{ common.docker_network_name }}"
     name: jackett
-    image: "{{ common.ls_registry }}/jackett:{{ common.container_platform }}-v0.22.1471-ls695"
+    image: "{{ common.ls_registry }}/jackett:{{ common.container_platform }}-v0.24.87-ls177"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -157,7 +157,7 @@ jackett:
 radarr:
     network_name: "{{ common.docker_network_name }}"
     name: radarr
-    image: "{{ common.ls_registry }}/radarr:{{ common.container_platform }}-5.19.3.9730-ls261"
+    image: "{{ common.ls_registry }}/radarr:{{ common.container_platform }}-5.27.5.10198-ls284"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -175,7 +175,7 @@ radarr:
 sonarr:
     network_name: "{{ common.docker_network_name }}"
     name: sonarr
-    image: "{{ common.ls_registry }}/sonarr:{{ common.container_platform }}-4.0.13.2932-ls272"
+    image: "{{ common.ls_registry }}/sonarr:{{ common.container_platform }}-4.0.15.2941-ls293"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -247,7 +247,7 @@ jellyfin:
 calibre:
     network_name: "{{ common.docker_network_name }}"
     name: calibre
-    image: "{{ common.ls_registry }}/calibre:{{ common.container_platform }}-v7.26.0-ls324"
+    image: "{{ common.ls_registry }}/calibre:{{ common.container_platform }}-v8.12.0-ls361"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -267,7 +267,7 @@ calibre:
 calibre_web:
     network_name: "{{ common.docker_network_name }}"
     name: calibre-web
-    image: "{{ common.ls_registry }}/calibre-web:{{ common.container_platform }}-0.6.24-ls317"
+    image: "{{ common.ls_registry }}/calibre-web:{{ common.container_platform }}-0.6.25-ls350"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -286,7 +286,7 @@ calibre_web:
 duckdns:
     network_name: "{{ common.docker_network_name }}"
     name: duckdns
-    image: "{{ common.ls_registry }}/duckdns:{{ common.container_platform }}-bf8528ec-ls46"
+    image: "{{ common.ls_registry }}/duckdns:{{ common.container_platform }}-6763ddf1-ls66"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -302,7 +302,7 @@ duckdns:
 prometheus:
     network_name: "{{ common.docker_network_name }}"
     name: prometheus
-    image: "prom/prometheus:v3.2.1"
+    image: "prom/prometheus:v3.6.0"
     ports:
         - "9090:9090"
     volumes:
@@ -357,7 +357,7 @@ cadvisor:
 grafana:
     network_name: "{{ common.docker_network_name }}"
     name: grafana
-    image: "grafana/grafana:11.5.2"
+    image: "grafana/grafana:12.3.0-18298134904"
     ports:
         - "3000:3000"
     volumes:
@@ -374,7 +374,7 @@ grafana:
 iptvboss:
     network_name: "{{ common.docker_network_name }}"
     name: iptvboss
-    image: "ghcr.io/groenator/iptvboss-docker:3.9.50"
+    image: "ghcr.io/groenator/iptvboss-docker:3.9.80"
     ports:
         - "8001:8001"
         - "5901:5901"
@@ -389,5 +389,23 @@ iptvboss:
         CRONITOR_SCHEDULE_NAME: "BOSS"
         XC_SERVER: "true"
         TZ: "US/Eastern"
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+
+dispatcharr:
+    network_name: "{{ common.docker_network_name }}"
+    name: dispatcharr
+    image: "ghcr.io/dispatcharr/dispatcharr:0.10.3-20251007150254"
+    ports:
+        - "9191:9191"
+    volumes:
+        - "{{ common.config_dir }}/dispatcharr_data:/data"
+    vars:
+        DISPATCHARR_ENV=aio
+        REDIS_HOST=localhost
+        CELERY_BROKER_URL=redis://localhost:6379/0
+        DISPATCHARR_LOG_LEVEL=info
+    devices:
+        - "/dev/dri:/dev/dri"
     restart_policy: "{{ common.restart_policy }}"
     state: "{{ common.state }}"

@@ -1,10 +1,10 @@
 ---
 collections:
   - name: community.docker
-    version: 3.4.11
+    version: 4.7.0
 roles:
   # Install a role from Ansible Galaxy.
   - name: geerlingguy.docker
-    version: 6.0.2
+    version: 7.6.0
   - name: geerlingguy.pip
-    version: 2.2.0
+    version: 3.1.0

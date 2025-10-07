@@ -467,3 +467,19 @@
       tags:
         - docker
         - iptvboss
+
+    - name: dispatcharr
+      community.docker.docker_container:
+        name: "{{ dispatcharr.name }}"
+        image: "{{ dispatcharr.image }}"
+        env: "{{ dispatcharr.vars }}"
+        ports: "{{ dispatcharr.ports }}"
+        devices: "{{ jellyfin.devices }}"
+        volumes: "{{ dispatcharr.volumes }}"
+        restart_policy: "{{ dispatcharr.restart_policy }}"
+        state: "{{ dispatcharr.state }}"
+        networks:
+          - name: "{{ dispatcharr.network_name }}"
+      tags:
+        - docker
+        - dispatcharr
