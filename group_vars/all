@@ -395,7 +395,7 @@ iptvboss:
 dispatcharr:
     network_name: "{{ common.docker_network_name }}"
     name: dispatcharr
-    image: "ghcr.io/dispatcharr/dispatcharr:0.10.3-20251007150254"
+    image: "ghcr.io/dispatcharr/dispatcharr:0.11.2-20251105010852"
     ports:
         - "9191:9191"
     volumes:
