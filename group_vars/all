@@ -219,7 +219,7 @@ plex:
         - "32414:32414/udp"
         - "32469:32469"
     restart_policy: "{{ common.restart_policy }}"
-    state: "stopped"
+    state: "absent"
 
 jellyfin:
     network_name: "{{ common.docker_network_name }}"
@@ -231,6 +231,7 @@ jellyfin:
         TZ: "{{ common.time_zone }}"
         UMASK: "{{ common.umask }}"
         JELLYFIN_PublishedServerUrl: "192.168.121.98"
+        DOCKER_MODS: "linuxserver/mods:jellyfin-amd"
     volumes:
         - "{{ common.config_dir }}/jellyfin/config:/config"
         - "{{ nfs.mountpoint }}/new:/downloads"
@@ -238,6 +239,7 @@ jellyfin:
         - "{{ nfs.mountpoint }}/movies:/movies"
     devices:
         - "/dev/dri:/dev/dri"
+        - "/dev/kfd:/dev/kfd"
     ports:
         - "8096:8096"
         - "8920:8920"
@@ -395,17 +397,38 @@ iptvboss:
 dispatcharr:
     network_name: "{{ common.docker_network_name }}"
     name: dispatcharr
-    image: "ghcr.io/dispatcharr/dispatcharr:0.17.0-20260121005346"
+    image: "ghcr.io/dispatcharr/dispatcharr:0.18.1-20260127213422"
     ports:
         - "9191:9191"
     volumes:
         - "{{ common.config_dir }}/dispatcharr_data:/data"
     vars:
-        DISPATCHARR_ENV=aio
-        REDIS_HOST=localhost
-        CELERY_BROKER_URL=redis://localhost:6379/0
-        DISPATCHARR_LOG_LEVEL=info
+        DISPATCHARR_ENV: aio
+        REDIS_HOST: localhost
+        CELERY_BROKER_URL: redis://localhost:6379/0
+        DISPATCHARR_LOG_LEVEL: info
     devices:
         - "/dev/dri:/dev/dri"
     restart_policy: "{{ common.restart_policy }}"
     state: "{{ common.state }}"
+
+celery:
+    network_name: "{{ common.docker_network_name }}"
+    name: celery
+    image: "ghcr.io/dispatcharr/dispatcharr:0.18.1-20260127213422"
+    etc_hosts:
+      host_machine: host-gateway
+    vars:
+        POSTGRES_HOST: db
+        POSTGRES_DB: dispatcharr
+        POSTGRES_USER: dispatch
+        POSTGRES_PASSWORD: secret
+        REDIS_HOST: redis
+        CELERY_BROKER_URL: redis://redis:6379/0
+    restart_policy: "{{ common.restart_policy }}"
+    state: "{{ common.state }}"
+    command: >
+      bash -c "
+      cd /app &&
+      nice -n 5 celery -A dispatcharr worker -l info
+      "

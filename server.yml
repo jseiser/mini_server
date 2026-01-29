@@ -474,7 +474,7 @@
         image: "{{ dispatcharr.image }}"
         env: "{{ dispatcharr.vars }}"
         ports: "{{ dispatcharr.ports }}"
-        devices: "{{ jellyfin.devices }}"
+        devices: "{{ dispatcharr.devices }}"
         volumes: "{{ dispatcharr.volumes }}"
         restart_policy: "{{ dispatcharr.restart_policy }}"
         state: "{{ dispatcharr.state }}"
@@ -483,3 +483,19 @@
       tags:
         - docker
         - dispatcharr
+
+    # - name: celery
+    #   community.docker.docker_container:
+    #     name: "{{ celery.name }}"
+    #     image: "{{ celery.image }}"
+    #     env: "{{ celery.vars }}"
+    #     restart_policy: "{{ celery.restart_policy }}"
+    #     state: "{{ celery.state }}"
+    #     networks:
+    #       - name: "{{ celery.network_name }}"
+    #     command: "{{ celery.command }}"
+    #     etc_hosts: "{{ celery.etc_hosts }}"
+    #   tags:
+    #     - docker
+    #     - dispatcharr
+    #     - celery
