@@ -273,41 +273,41 @@
         - docker
         - duckdns
 
-    - name: PROMETHEUS volume
-      community.docker.docker_volume:
-        name: prometheus_data
-      tags:
-        - docker
-        - monitoring
-        - prometheus
+    # - name: PROMETHEUS volume
+    #   community.docker.docker_volume:
+    #     name: prometheus_data
+    #   tags:
+    #     - docker
+    #     - monitoring
+    #     - prometheus
 
-    - name: PROMETHEUS Dir
-      ansible.builtin.file:
-        path: "{{ common.config_dir }}/prometheus"
-        state: directory
-        mode: "0755"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-      tags:
-        - docker
-        - monitoring
-        - prometheus
-      register: jacket_files
+    # - name: PROMETHEUS Dir
+    #   ansible.builtin.file:
+    #     path: "{{ common.config_dir }}/prometheus"
+    #     state: directory
+    #     mode: "0755"
+    #     owner: "{{ ansible_user }}"
+    #     group: "{{ ansible_user }}"
+    #   tags:
+    #     - docker
+    #     - monitoring
+    #     - prometheus
+    #   register: jacket_files
 
-    - name: PROMETHEUS Configs
-      ansible.builtin.copy:
-        src: "{{ item }}"
-        dest: "{{ common.config_dir }}/prometheus/{{ item }}"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        mode: "0644"
-      loop:
-        - prometheus.yml
-      register: prom_config
-      tags:
-        - docker
-        - monitoring
-        - prometheus
+    # - name: PROMETHEUS Configs
+    #   ansible.builtin.copy:
+    #     src: "{{ item }}"
+    #     dest: "{{ common.config_dir }}/prometheus/{{ item }}"
+    #     owner: "{{ ansible_user }}"
+    #     group: "{{ ansible_user }}"
+    #     mode: "0644"
+    #   loop:
+    #     - prometheus.yml
+    #   register: prom_config
+    #   tags:
+    #     - docker
+    #     - monitoring
+    #     - prometheus
 
     - name: PROMETHEUS
       community.docker.docker_container:
@@ -325,16 +325,16 @@
         - monitoring
         - prometheus
 
-    - name: PROMETHEUS Restart # noqa no-handler
-      community.docker.docker_container:
-        name: "{{ prometheus.name }}"
-        image: "{{ prometheus.image }}"
-        state: "started"
-      when: prom_config.changed
-      tags:
-        - docker
-        - monitoring
-        - prometheus
+    # - name: PROMETHEUS Restart # noqa no-handler
+    #   community.docker.docker_container:
+    #     name: "{{ prometheus.name }}"
+    #     image: "{{ prometheus.image }}"
+    #     state: "started"
+    #   when: prom_config.changed
+    #   tags:
+    #     - docker
+    #     - monitoring
+    #     - prometheus
 
     - name: NODE_EXPORTER
       community.docker.docker_container:
@@ -369,60 +369,60 @@
         - monitoring
         - cadvisor
 
-    - name: GRAFANA volume
-      community.docker.docker_volume:
-        name: grafana_data
-      tags:
-        - docker
-        - monitoring
-        - grafana
+    # - name: GRAFANA volume
+    #   community.docker.docker_volume:
+    #     name: grafana_data
+    #   tags:
+    #     - docker
+    #     - monitoring
+    #     - grafana
 
-    - name: GRAFANA Dir
-      ansible.builtin.file:
-        path: "{{ common.config_dir }}/{{ item }}"
-        state: directory
-        mode: "0755"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-      loop:
-        - "grafana"
-        - "grafana/provisioning"
-        - "grafana/provisioning/dashboards"
-        - "grafana/provisioning/datasources"
-      tags:
-        - docker
-        - monitoring
-        - grafana
+    # - name: GRAFANA Dir
+    #   ansible.builtin.file:
+    #     path: "{{ common.config_dir }}/{{ item }}"
+    #     state: directory
+    #     mode: "0755"
+    #     owner: "{{ ansible_user }}"
+    #     group: "{{ ansible_user }}"
+    #   loop:
+    #     - "grafana"
+    #     - "grafana/provisioning"
+    #     - "grafana/provisioning/dashboards"
+    #     - "grafana/provisioning/datasources"
+    #   tags:
+    #     - docker
+    #     - monitoring
+    #     - grafana
 
-    - name: GRAFANA Datasources
-      ansible.builtin.copy:
-        src: "{{ item }}"
-        dest: "{{ common.config_dir }}/grafana/provisioning/datasources/{{ item }}"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        mode: "0644"
-      loop:
-        - datasource.yml
-      register: grafana_ds
-      tags:
-        - docker
-        - monitoring
-        - grafana
+    # - name: GRAFANA Datasources
+    #   ansible.builtin.copy:
+    #     src: "{{ item }}"
+    #     dest: "{{ common.config_dir }}/grafana/provisioning/datasources/{{ item }}"
+    #     owner: "{{ ansible_user }}"
+    #     group: "{{ ansible_user }}"
+    #     mode: "0644"
+    #   loop:
+    #     - datasource.yml
+    #   register: grafana_ds
+    #   tags:
+    #     - docker
+    #     - monitoring
+    #     - grafana
 
-    - name: GRAFANA Dashboards
-      ansible.builtin.copy:
-        src: "{{ item }}"
-        dest: "{{ common.config_dir }}/grafana/provisioning/dashboards/{{ item }}"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        mode: "0644"
-      loop:
-        - dashboard.yml
-      register: grafana_db
-      tags:
-        - docker
-        - monitoring
-        - grafana
+    # - name: GRAFANA Dashboards
+    #   ansible.builtin.copy:
+    #     src: "{{ item }}"
+    #     dest: "{{ common.config_dir }}/grafana/provisioning/dashboards/{{ item }}"
+    #     owner: "{{ ansible_user }}"
+    #     group: "{{ ansible_user }}"
+    #     mode: "0644"
+    #   loop:
+    #     - dashboard.yml
+    #   register: grafana_db
+    #   tags:
+    #     - docker
+    #     - monitoring
+    #     - grafana
 
     - name: GRAFANA
       community.docker.docker_container:
@@ -440,18 +440,18 @@
         - monitoring
         - grafana
 
-    - name: GRAFANA Restart # noqa no-handler
-      community.docker.docker_container:
-        name: "{{ grafana.name }}"
-        image: "{{ grafana.image }}"
-        state: "started"
-      when:
-        - grafana_db.changed
-        - grafana_ds.changed
-      tags:
-        - docker
-        - monitoring
-        - grafana
+    # - name: GRAFANA Restart # noqa no-handler
+    #   community.docker.docker_container:
+    #     name: "{{ grafana.name }}"
+    #     image: "{{ grafana.image }}"
+    #     state: "started"
+    #   when:
+    #     - grafana_db.changed
+    #     - grafana_ds.changed
+    #   tags:
+    #     - docker
+    #     - monitoring
+    #     - grafana
 
     - name: IPTVBOSS
       community.docker.docker_container:
