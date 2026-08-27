@@ -34,12 +34,9 @@
       "groupName": "docker image updates"
     },
     {
-      "description": "Group all non-Docker updates together",
-      "matchPackageNames": [
-        "*"
-      ],
-      "excludeDatasources": [
-        "docker"
+      "description": "Group all Ansible updates together",
+      "matchManagers": [
+        "ansible"
       ],
       "groupName": "ansible updates"
     }
