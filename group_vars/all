@@ -57,8 +57,7 @@ common:
     umask: "022"
     uid: "1000"
     gid: "1000"
-    ls_registry: "lscr.io/linuxserver"
-    container_platform: "amd64"
+
 
 docker_users:
     - "{{ ansible_user }}"
@@ -85,7 +84,7 @@ pihole:
 sabnzbd:
     network_name: "{{ common.docker_network_name }}"
     name: sabnzbd
-    image: "{{ common.ls_registry }}/sabnzbd:{{ common.container_platform }}-5.0.4-ls262"
+    image: "lscr.io/linuxserver/sabnzbd:amd64-5.0.4-ls262"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -103,7 +102,7 @@ sabnzbd:
 deluge:
     network_name: "{{ common.docker_network_name }}"
     name: deluge
-    image: "{{ common.ls_registry }}/deluge:{{ common.container_platform }}-2.2.0-ls381"
+    image: "lscr.io/linuxserver/deluge:amd64-2.2.0-ls381"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -122,7 +121,7 @@ deluge:
 nzbhydra2:
     network_name: "{{ common.docker_network_name }}"
     name: nzbhydra2
-    image: "{{ common.ls_registry }}/nzbhydra2:{{ common.container_platform }}-v8.9.0-ls96"
+    image: "lscr.io/linuxserver/nzbhydra2:amd64-v8.9.0-ls96"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -139,7 +138,7 @@ nzbhydra2:
 jackett:
     network_name: "{{ common.docker_network_name }}"
     name: jackett
-    image: "{{ common.ls_registry }}/jackett:{{ common.container_platform }}-v0.24.2206-ls458"
+    image: "lscr.io/linuxserver/jackett:amd64-v0.24.2206-ls458"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -157,7 +156,7 @@ jackett:
 radarr:
     network_name: "{{ common.docker_network_name }}"
     name: radarr
-    image: "{{ common.ls_registry }}/radarr:{{ common.container_platform }}-6.2.1.10461-ls309"
+    image: "lscr.io/linuxserver/radarr:amd64-6.2.1.10461-ls309"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -175,7 +174,7 @@ radarr:
 sonarr:
     network_name: "{{ common.docker_network_name }}"
     name: sonarr
-    image: "{{ common.ls_registry }}/sonarr:{{ common.container_platform }}-4.0.19.2979-ls319"
+    image: "lscr.io/linuxserver/sonarr:amd64-4.0.19.2979-ls319"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -190,41 +189,11 @@ sonarr:
     restart_policy: "{{ common.restart_policy }}"
     state: "{{ common.state }}"
 
-plex:
-    network_name: "{{ common.docker_network_name }}"
-    name: plex
-    image: "{{ common.ls_registry }}/plex:{{ common.container_platform }}-1.41.4"
-    vars:
-        PUID: "{{ common.uid }}"
-        PGID: "{{ common.gid }}"
-        TZ: "{{ common.time_zone }}"
-        UMASK: "{{ common.umask }}"
-        VERSION: "docker"
-    volumes:
-        - "{{ common.config_dir }}/plex/config:/config"
-        - "{{ nfs.mountpoint }}/new:/downloads"
-        - "{{ nfs.mountpoint }}/tv:/tv"
-        - "{{ nfs.mountpoint }}/movies:/movies"
-    devices:
-        - "/dev/dri:/dev/dri"
-    ports:
-        - "32400:32400"
-        - "1900:1900/udp"
-        - "3005:3005"
-        - "5353:5353/udp"
-        - "8324:8324"
-        - "32410:32410/udp"
-        - "32412:32412/udp"
-        - "32413:32413/udp"
-        - "32414:32414/udp"
-        - "32469:32469"
-    restart_policy: "{{ common.restart_policy }}"
-    state: "absent"
 
 jellyfin:
     network_name: "{{ common.docker_network_name }}"
     name: jellyfin
-    image: "{{ common.ls_registry }}/jellyfin:{{ common.container_platform }}-10.11.11"
+    image: "lscr.io/linuxserver/jellyfin:amd64-10.11.11"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -249,7 +218,7 @@ jellyfin:
 calibre:
     network_name: "{{ common.docker_network_name }}"
     name: calibre
-    image: "{{ common.ls_registry }}/calibre:{{ common.container_platform }}-v9.11.0-ls411"
+    image: "lscr.io/linuxserver/calibre:amd64-v9.11.0-ls411"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -269,7 +238,7 @@ calibre:
 calibre_web:
     network_name: "{{ common.docker_network_name }}"
     name: calibre-web
-    image: "{{ common.ls_registry }}/calibre-web:{{ common.container_platform }}-0.6.26-ls391"
+    image: "lscr.io/linuxserver/calibre-web:amd64-0.6.26-ls391"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -288,7 +257,7 @@ calibre_web:
 duckdns:
     network_name: "{{ common.docker_network_name }}"
     name: duckdns
-    image: "{{ common.ls_registry }}/duckdns:{{ common.container_platform }}-d67e71cc-ls82"
+    image: "lscr.io/linuxserver/duckdns:amd64-d67e71cc-ls82"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -301,77 +270,6 @@ duckdns:
     restart_policy: "{{ common.restart_policy }}"
     state: "{{ common.state }}"
 
-prometheus:
-    network_name: "{{ common.docker_network_name }}"
-    name: prometheus
-    image: "prom/prometheus:v3.13.1"
-    ports:
-        - "9090:9090"
-    volumes:
-        - "{{ common.config_dir }}/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
-        - "prometheus_data:/prometheus"
-    command:
-        - "--config.file=/etc/prometheus/prometheus.yml"
-        - "--storage.tsdb.path=/prometheus"
-        - "--web.console.libraries=/etc/prometheus/console_libraries"
-        - "--web.console.templates=/etc/prometheus/consoles"
-        - "--storage.tsdb.retention.size=10GB"
-        - "--web.enable-lifecycle"
-    restart_policy: "{{ common.restart_policy }}"
-    state: "absent"
-
-node_exporter:
-    network_name: "{{ common.docker_network_name }}"
-    name: node-exporter
-    image: "prom/node-exporter:v1.12.0"
-    ports:
-        - "9100:9100"
-    volumes:
-        - "/proc:/host/proc:ro"
-        - "/sys:/host/sys:ro"
-        - "/:/rootfs:ro"
-    command:
-        - "--path.procfs=/host/proc"
-        - "--path.rootfs=/rootfs"
-        - "--path.sysfs=/host/sys"
-        - "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)"
-    restart_policy: "{{ common.restart_policy }}"
-    state: "absent"
-
-cadvisor:
-    network_name: "{{ common.docker_network_name }}"
-    name: cadvisor
-    image: "gcr.io/cadvisor/cadvisor:v0.60.5"
-    privileged: yes
-    devices:
-        - /dev/kmsg:/dev/kmsg
-    volumes:
-        - "/:/rootfs:ro"
-        - "/var/run:/var/run:ro"
-        - "/sys:/sys:ro"
-        - "/var/lib/docker/:/var/lib/docker:ro"
-        - "/dev/disk/:/dev/disk:ro"
-    ports:
-        - "8088:8080"
-    restart_policy: "{{ common.restart_policy }}"
-    state: "absent"
-
-grafana:
-    network_name: "{{ common.docker_network_name }}"
-    name: grafana
-    image: "grafana/grafana:13.0.3"
-    ports:
-        - "3000:3000"
-    volumes:
-        - "{{ common.config_dir }}/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro"
-        - "{{ common.config_dir }}/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro"
-        - "grafana_data:/var/lib/grafana"
-    vars:
-        GF_SECURITY_ADMIN_USER: "{{ grafana_user }}"
-        GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_password }}"
-        GF_USERS_ALLOW_SIGN_UP: "false"
-    restart_policy: "{{ common.restart_policy }}"
-    state: "absent"
 
 iptvboss:
     network_name: "{{ common.docker_network_name }}"
@@ -393,21 +291,3 @@ iptvboss:
         TZ: "US/Eastern"
     restart_policy: "{{ common.restart_policy }}"
     state: "{{ common.state }}"
-
-dispatcharr:
-    network_name: "{{ common.docker_network_name }}"
-    name: dispatcharr
-    image: "ghcr.io/dispatcharr/dispatcharr:0.18.1-20260127213422"
-    ports:
-        - "9191:9191"
-    volumes:
-        - "{{ common.config_dir }}/dispatcharr_data:/data"
-    vars:
-        DISPATCHARR_ENV: aio
-        REDIS_HOST: localhost
-        CELERY_BROKER_URL: redis://localhost:6379/0
-        DISPATCHARR_LOG_LEVEL: info
-    devices:
-        - "/dev/dri:/dev/dri"
-    restart_policy: "{{ common.restart_policy }}"
-    state: "absent" # "{{ common.state }}"
