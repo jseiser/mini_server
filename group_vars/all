@@ -84,7 +84,7 @@ pihole:
 sabnzbd:
     network_name: "{{ common.docker_network_name }}"
     name: sabnzbd
-    image: "lscr.io/linuxserver/sabnzbd:amd64-5.0.4-ls262"
+    image: "lscr.io/linuxserver/sabnzbd:amd64-5.1.2-ls270"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -156,7 +156,7 @@ jackett:
 radarr:
     network_name: "{{ common.docker_network_name }}"
     name: radarr
-    image: "lscr.io/linuxserver/radarr:amd64-6.2.1.10461-ls309"
+    image: "lscr.io/linuxserver/radarr:amd64-6.3.0.10514-ls314"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -218,7 +218,7 @@ jellyfin:
 calibre:
     network_name: "{{ common.docker_network_name }}"
     name: calibre
-    image: "lscr.io/linuxserver/calibre:amd64-v9.11.0-ls411"
+    image: "lscr.io/linuxserver/calibre:amd64-v9.14.0-ls418"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
@@ -238,7 +238,7 @@ calibre:
 calibre_web:
     network_name: "{{ common.docker_network_name }}"
     name: calibre-web
-    image: "lscr.io/linuxserver/calibre-web:amd64-0.6.26-ls391"
+    image: "lscr.io/linuxserver/calibre-web:amd64-0.6.27-ls399"
     vars:
         PUID: "{{ common.uid }}"
         PGID: "{{ common.gid }}"
