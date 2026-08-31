@@ -5,6 +5,6 @@ collections:
 roles:
   # Install a role from Ansible Galaxy.
   - name: geerlingguy.docker
-    version: 7.6.0
+    version: 8.0.0
   - name: geerlingguy.pip
     version: 3.1.0
