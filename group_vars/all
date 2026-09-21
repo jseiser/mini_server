@@ -68,7 +68,7 @@ pip_install_packages:
 pihole:
     network_name: "{{ common.docker_network_name }}"
     name: pihole
-    image: "pihole/pihole:2026.07.2"
+    image: "pihole/pihole:2026.09.0"
     vars:
         TZ: "{{ common.time_zone }}"
     volumes:
@@ -274,7 +274,7 @@ duckdns:
 iptvboss:
     network_name: "{{ common.docker_network_name }}"
     name: iptvboss
-    image: "ghcr.io/groenator/iptvboss-docker:3.10.5"
+    image: "ghcr.io/groenator/iptvboss-docker:3.12.5"
     ports:
         - "8001:8001"
         - "5901:5901"
